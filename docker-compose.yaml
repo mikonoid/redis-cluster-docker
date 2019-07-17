@@ -1,0 +1,108 @@
+version: '3'
+
+networks:
+
+  redisnet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.0.0/16
+
+services:
+
+  redis-1:
+    container_name: redis-1
+    build: redis-1
+    command: redis-server /etc/redis/redis.conf
+    networks:
+      redisnet:
+        ipv4_address: 10.0.0.2
+    ports:
+      - "7000:7000"
+    expose:
+      - "7000"
+
+  redis-2:
+    container_name: redis-2
+    build: redis-2
+    command: redis-server /etc/redis/redis.conf
+    depends_on:
+      - redis-1
+    networks:
+      redisnet:
+        ipv4_address: 10.0.0.3
+    ports:
+      - "7001:7001"
+    expose:
+      - "7001"
+
+  redis-3:
+    container_name: redis-3
+    build: redis-3
+    command: redis-server /etc/redis/redis.conf
+    depends_on:
+      - redis-2
+    networks:
+      redisnet:
+        ipv4_address: 10.0.0.4
+    ports:
+      - "7002:7002"
+    expose:
+      - "7002"
+
+  redis-4:
+    container_name: redis-4
+    build: redis-4
+    command: redis-server /etc/redis/redis.conf
+    depends_on:
+      - redis-3
+    networks:
+      redisnet:
+        ipv4_address: 10.0.0.5
+    ports:
+      - "7003:7003"
+    expose:
+      - "7003"
+
+  redis-5:
+    container_name: redis-5
+    build: redis-5
+    command: redis-server /etc/redis/redis.conf
+    depends_on:
+      - redis-4
+    networks:
+      redisnet:
+        ipv4_address: 10.0.0.6
+    ports:
+      - "7004:7004"
+    expose:
+      - "7004"
+
+  redis-6:
+    container_name: redis-6
+    build: redis-6
+    command: redis-server /etc/redis/redis.conf
+    depends_on:
+      - redis-5
+    networks:
+      redisnet:
+        ipv4_address: 10.0.0.7
+    ports:
+      - "7005:7005"
+    expose:
+      - "7005"
+
+  redis-cli:
+    container_name: redis-cli
+    build: redis-cli
+    image: redis-cli
+    depends_on:
+      - redis-1
+      - redis-2
+      - redis-3
+      - redis-4
+      - redis-5
+      - redis-6
+    networks:
+      redisnet:
+        ipv4_address: 10.0.0.8
