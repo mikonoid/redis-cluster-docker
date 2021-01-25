@@ -1,4 +1,3 @@
-### TODO: docker image from alpine
 FROM ubuntu:xenial
 RUN apt-get update && \
   apt-get -y install wget curl build-essential
